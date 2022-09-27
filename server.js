@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import 'express-async-errors';
-import cors from 'cors';
+import morgan from 'morgan';
+import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
 
@@ -16,8 +17,11 @@ import jobRoutes from './routes/jobRoutes.js';
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 
-app.use(cors());
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'))
+}
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Welcome!");
