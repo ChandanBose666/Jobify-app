@@ -52,7 +52,7 @@ const RegisterPage = () => {
     } else {
       registerUser(currentUser);
     }
-    setValues(initialState);
+    // setValues(initialState);
   };
 
   return (
