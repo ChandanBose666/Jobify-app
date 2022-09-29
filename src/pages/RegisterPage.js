@@ -14,22 +14,9 @@ const initialState = {
 const RegisterPage = () => {
   const [values, setValues] = useState(initialState);
 
-  const {
-    isLoading,
-    showAlert,
-    displayAlert,
-    registerUser,
-    user
-  } = useAppContext();
+  const { isLoading, showAlert, displayAlert, setupUser, user } =
+    useAppContext();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) {
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
-    }
-  }, [user, navigate]);
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -48,12 +35,28 @@ const RegisterPage = () => {
     }
     const currentUser = { name, email, password };
     if (isMember) {
-      console.log("Already a member");
+      setupUser({
+        currentUser,
+        endPoint: "login",
+        alertText: "Login Succesful! Redirecting...",
+      });
     } else {
-      registerUser(currentUser);
+      setupUser({
+        currentUser,
+        endPoint: "register",
+        alertText: "User Created! Redirecting...",
+      });
     }
     // setValues(initialState);
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   return (
     <Wrapper className="full-page">

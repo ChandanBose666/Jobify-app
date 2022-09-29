@@ -1,5 +1,5 @@
 import ErrorPage from "./ErrorPage";
-import DashBoard from "./DashBoard";
 import RegisterPage from "./RegisterPage";
+import ProtectedRoute from "./ProtectedRoute";
 
-export { ErrorPage, DashBoard, RegisterPage };
+export { ErrorPage, RegisterPage, ProtectedRoute };
