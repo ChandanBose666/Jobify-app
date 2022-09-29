@@ -18,8 +18,8 @@ const register = async (req, res) => {
   const token = user.createJWT();
   res.cookie("jwtTokenCookie", token, {
     httpOnly: true,
-    secure: true
-  })
+    secure: true,
+  });
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
@@ -32,24 +32,28 @@ const register = async (req, res) => {
   });
 };
 const login = async (req, res) => {
- const { email, password } = req.body;
-  if(!email || !password){
+  const { email, password } = req.body;
+  if (!email || !password) {
     throw new BadRequestError("Please provide all inputs");
   }
-  const user = await User.findOne({email}).select('+password');
+  const user = await User.findOne({ email }).select("+password");
 
-  if(!user){
-    throw new UnauthenticatedError("Invalid Credentials!")
+  if (!user) {
+    throw new UnauthenticatedError("Invalid Credentials!");
   }
-  
+
   const isPasswordCorrect = await user.comparePassword(password);
-  if(!isPasswordCorrect) {
-    throw new UnauthenticatedError("Credentials mismatch!")
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError("Credentials mismatch!");
   }
-
-
-}
-
+  const token = user.createJWT();
+  res.cookie("jwtTokenCookie", token, {
+    httpOnly: true,
+    secure: true,
+  });
+  user.password = undefined;
+  res.status(StatusCodes.OK).json({ user, token, location: user.location });
+};
 
 const updateUser = async (req, res) => res.send("User updated");
 
