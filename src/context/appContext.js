@@ -8,6 +8,8 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./action";
 
 
@@ -25,6 +27,7 @@ const initialState = {
   token: token,
   userLocation: userLocation || '',
   jobLocation: userLocation || '',
+  showSidebar: false,
 };
 
 const AppContext = createContext();
@@ -44,6 +47,10 @@ const AppProvider = ({ children }) => {
       });
     }, 3000);
   };
+
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type:SETUP_USER_BEGIN });
@@ -95,6 +102,12 @@ const AppProvider = ({ children }) => {
     clearAlert();
   }
 
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER })
+    removeUserFromLocalStorage();
+  }
+  
+
   const addUserToLocalStorage = ({ user, token, location }) => {
     localStorage.setItem('user', JSON.stringify(user))
     localStorage.setItem('token', token)
@@ -114,6 +127,8 @@ const AppProvider = ({ children }) => {
         displayAlert,
         setupUser,
         loginUser,
+        toggleSidebar,
+        logoutUser,
       }}
     >
       {children}
