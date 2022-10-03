@@ -1,9 +1,28 @@
 import Wrapper from "../assets/wrappers/SmallSidebar";
+import { FaTimes } from "react-icons/fa";
+import { useAppContext } from "../context/appContext";
+import Navlinks from "./Navlinks";
+import Logo from "./Logo";
 
 const SmallSidebar = () => {
+  const { showSidebar, toggleSidebar } = useAppContext();
   return (
     <Wrapper>
-      <h1>Small Side Bar</h1>
+      <div
+        className={
+          showSidebar ? "sidebar-container show-sidebar" : "sidebar-container"
+        }
+      >
+        <div className="content">
+          <button className="close-btn" onClick={toggleSidebar}>
+            <FaTimes />
+          </button>
+          <header>
+            <Logo />
+          </header>
+          <Navlinks toggleSidebar={toggleSidebar} />
+        </div>
+      </div>
     </Wrapper>
   );
 };
