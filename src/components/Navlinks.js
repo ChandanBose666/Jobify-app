@@ -16,7 +16,7 @@ const Navlinks = ({ toggleSidebar }) => {
             onClick={toggleSidebar}
           >
             <span className="icon">{icon}</span>
-            {text}
+           {text}
           </NavLink>
         );
       })}

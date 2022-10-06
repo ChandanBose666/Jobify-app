@@ -13,7 +13,8 @@ import {
 } from "./action";
 
 
-const token = localStorage.getItem('token')
+const token = localStorage.getItem('token');
+
 const user = localStorage.getItem('user')
 const userLocation = localStorage.getItem('location')
 
@@ -107,6 +108,18 @@ const AppProvider = ({ children }) => {
     removeUserFromLocalStorage();
   }
   
+  const updateUser = async (currentUser) => {
+    try {
+      const {data} = await axios.patch('/api/v1/auth/updateUser', currentUser, {
+        headers: {
+          Authorization: `Bearer ${state.token}`
+        },
+      })
+      console.log(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   const addUserToLocalStorage = ({ user, token, location }) => {
     localStorage.setItem('user', JSON.stringify(user))
@@ -129,6 +142,7 @@ const AppProvider = ({ children }) => {
         loginUser,
         toggleSidebar,
         logoutUser,
+        updateUser,
       }}
     >
       {children}
