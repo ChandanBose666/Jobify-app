@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { useAppContext } from "../context/appContext";
@@ -96,6 +96,7 @@ const RegisterPage = () => {
             {values.isMember ? "Register" : "Login"}
           </button>
         </p>
+        <Link to="/landing"><p className="member-btn">Home</p></Link>
       </form>
     </Wrapper>
   );
