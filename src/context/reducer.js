@@ -17,7 +17,14 @@ import {
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
   SET_EDIT_JOB,
-} from "./action";
+  DELETE_JOB_BEGIN,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_SUCCESS,
+  EDIT_JOB_ERROR,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
+  SHOW_STATS_ERROR,
+ } from "./action";
 
 import { initialState } from "./appContext";
 
@@ -164,6 +171,51 @@ const reducer = (state, action) => {
         jobType,
         status,
       };
+    case DELETE_JOB_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case EDIT_JOB_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case EDIT_JOB_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: "success",
+        alertText: "Job Updated Successfully",
+      };
+    case EDIT_JOB_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: "danger",
+        alertText: payload.msg,
+      };
+    case SHOW_STATS_BEGIN:
+      return {
+        ...state, isLoading: true, showAlert:false,
+      }
+    case SHOW_STATS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        stats: payload.stats,
+        monthlyApplications: payload.monthlyApplications,
+      }
+    case SHOW_STATS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: "danger",
+        alertText: payload.msg, 
+      }
     default:
       throw new Error(`there is no such :${type}`);
   }
