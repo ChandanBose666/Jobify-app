@@ -28,6 +28,8 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   SHOW_STATS_ERROR,
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -117,6 +119,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
+
   const handleChange = ({ name, value }) => {
     dispatch({
       type: HANDLE_CHANGE,
@@ -126,6 +132,10 @@ const AppProvider = ({ children }) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
@@ -234,9 +244,16 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
+    const { page, search, searchStatus, searchType, sort } = state;
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+
+    if (search) {
+      url = url + `&search=${search}`;
+    }
+
     dispatch({ type: GET_JOBS_BEGIN });
     try {
-      const { data } = await authFetch("/jobs");
+      const { data } = await authFetch(url);
       const { jobs, totalJobs, numOfPages } = data;
       dispatch({
         type: GET_JOBS_SUCCESS,
@@ -357,6 +374,8 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         showStats,
+        clearFilters,
+        changePage,
       }}
     >
       {children}

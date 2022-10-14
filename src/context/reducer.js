@@ -24,7 +24,9 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   SHOW_STATS_ERROR,
- } from "./action";
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
+} from "./action";
 
 import { initialState } from "./appContext";
 
@@ -106,6 +108,7 @@ const reducer = (state, action) => {
     case HANDLE_CHANGE:
       return {
         ...state,
+        page: 1,
         [payload.name]: payload.value,
       };
     case CLEAR_VALUES:
@@ -199,22 +202,37 @@ const reducer = (state, action) => {
       };
     case SHOW_STATS_BEGIN:
       return {
-        ...state, isLoading: true, showAlert:false,
-      }
+        ...state,
+        isLoading: true,
+        showAlert: false,
+      };
     case SHOW_STATS_SUCCESS:
       return {
         ...state,
         isLoading: false,
         stats: payload.stats,
         monthlyApplications: payload.monthlyApplications,
-      }
+      };
     case SHOW_STATS_ERROR:
       return {
         ...state,
         isLoading: false,
         showAlert: true,
         alertType: "danger",
-        alertText: payload.msg, 
+        alertText: payload.msg,
+      };
+    case CLEAR_FILTERS:
+      return {
+        ...state,
+        search: "",
+        searchStatus: "all",
+        searchType: "all",
+        sort: "latest",
+      };
+    case CHANGE_PAGE:
+      return {
+        ...state,
+        page: payload.page,
       }
     default:
       throw new Error(`there is no such :${type}`);
